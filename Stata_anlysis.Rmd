@@ -1,0 +1,52 @@
+---
+title: "Stat_dis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+#Корреляционный анализ
+library(psych)
+#corr.test()
+dis = read.csv2("E:/Рак поджелудочной железы/ВКР/Набор материалла/Объединение датасетов/Data 02.24/Stats_data.csv", dec = ",") #read file
+
+out_corr <- corr.test(dis, adjust = "none", method = "kendal") # corellational anlysis
+out_corr_adj <- corr.test(dis, adjust = "hochberg", method = "kendal")
+
+write.csv2(out_corr$r, "E:/Рак поджелудочной железы/ВКР/Набор материалла/Объединение датасетов/Data 02.24/correl_r.csv")
+
+write.csv2(out_corr$p, "E:/Рак поджелудочной железы/ВКР/Набор материалла/Объединение датасетов/Data 02.24/correl_p.csv")
+
+write.csv2(out_corr$p.adj, "E:/Рак поджелудочной железы/ВКР/Набор материалла/Объединение датасетов/Data 02.24/correl_p_hochb.csv")
+```
+
+
+```{r setup, include=FALSE}
+#shapiro test
+cols <- colnames(dis)
+out = list()
+#for (i in 1 : length(dis)){print(c(shapiro.test(dis[, i])$p))}
+for (i in 1 : length(dis)){out <- (c(out, shapiro.test(dis[, i])$p))}
+df_out = data.frame(unlist(cols), unlist(out))
+
+write.csv2(df_out, "E:/Рак поджелудочной железы/ВКР/Набор материалла/Объединение датасетов/Data 02.24/shapiro_results.csv")
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
